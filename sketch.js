@@ -27,16 +27,26 @@ function draw() {
 function Cell(y, x) {
   this.x = x;
   this.y = y;
+  this.walls = [true, true, true, true]; // Top, Right, Bottom, Left
 
   // Show function for a specific cell
   this.show = function() {
     var x = this.x * w;
     var y = this.y * w;
     stroke(255);
-    line(x, y, x + w, y); // Top line
-    line(x + w, y, x + w, y + w); // Right line
-    line(x + w, y + w, x, y + w); // Bottom line
-    line(x, y + w, x, y); // Left lines
+    if (this.walls[0]) {
+
+      line(x, y, x + w, y); // Top line
+    }
+    if (this.walls[1]) {
+      line(x + w, y, x + w, y + w); // Right line
+    }
+    if (this.walls[2]) {
+      line(x + w, y + w, x, y + w); // Bottom line
+    }
+    if (this.walls[3]) {
+      line(x, y + w, x, y); // Left lines
+    }
 
     // noFill();
     // rect(x, y, w, w);
