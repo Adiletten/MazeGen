@@ -28,8 +28,9 @@ function draw() {
     cells[i].show(); // Show certain Cell
   }
 
-  // Set current cell to visited
+  // Set current cell to visited and set current to be hightlighted
   current.visited = true;
+  current.highlight();
 
   // Gets one random neighbour, this will be the next one to visit
   var next = current.checkNeighbours();
@@ -83,6 +84,15 @@ function Cell(y, x) {
     } else {
       return undefined;
     }
+  };
+
+  // Highlights the 'Bot', aka current cell
+  this.highlight = function () {
+    var x = this.x * w;
+    var y = this.y * w;
+    noStroke();
+    fill(0, 50, 200, 200);
+    rect(x, y, w, w);
   };
 
   // Show function for a specific cell
