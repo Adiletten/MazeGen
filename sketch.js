@@ -33,9 +33,10 @@ function draw() {
 
   // Gets one random neighbour, this will be the next one to visit
   var next = current.checkNeighbours();
-  // If there is a unvisted neighbour. Set it visited, and change the current cell to it.
+  // If there is a unvisted neighbour. Set it visited, change current to it, remove the wall between them
   if (next) {
     next.visited = true;
+    removeWalls(current, next);
     current = next;
   }
 }
@@ -106,8 +107,32 @@ function Cell(y, x) {
 
     // Colors cell if visited
     if (this.visited) {
+      noStroke();
       fill(255, 0, 200, 100);
       rect(x, y, w, w);
     }
   };
+}
+
+function removeWalls(a, b) {
+
+  // Remove left/right walls
+  var x = a.x - b.x;
+  if (x === 1) {
+    a.walls[3] = false; // Remove right wall
+    b.walls[1] = false; // Remove left wall
+  } else if(x === -1) {
+    a.walls[1] = false; // Remove right wall
+    b.walls[3] = false; // Remove left wall
+  }
+
+  // Remove bottom/top walls
+  var y = a.y - b.y;
+  if (y === 1) {
+    a.walls[0] = false; // Remove right wall
+    b.walls[2] = false; // Remove left wall
+  } else if(y === -1) {
+    a.walls[2] = false; // Remove right wall
+    b.walls[0] = false; // Remove left wall
+  }
 }
