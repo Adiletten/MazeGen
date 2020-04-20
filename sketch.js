@@ -7,6 +7,7 @@ function setup() {
   createCanvas(400, 400);
   cols = floor(width / w);
   rows = floor(height / w);
+  frameRate(5);
 
   // For every row, and for each column in that row. Make a new cell
   for (var x = 0; x < rows; x++) {
@@ -29,14 +30,21 @@ function draw() {
 
   // Set current cell to visited
   current.visited = true;
-  current.checkNeighbours();
+
+  // Gets one random neighbour, this will be the next one to visit
+  var next = current.checkNeighbours();
+  // If there is a unvisted neighbour. Set it visited, and change the current cell to it.
+  if (next) {
+    next.visited = true;
+    current = next;
+  }
 }
 
 function Index(y, x) {
-if (x < 0 || y < 0 || x > cols - 1 || y > rows - 1) {
-  return -1;
-}
-  return y + x * cols;
+  if (x < 0 || y < 0 || x > cols - 1 || y > rows - 1) {
+    return -1;
+  }
+  return x + y * cols;
 }
 
 function Cell(y, x) {
@@ -53,17 +61,26 @@ function Cell(y, x) {
     var bottom = cells[Index(x, y + 1)];
     var left = cells[Index(x - 1, y)];
 
-    if(top && !top.visited){
+    // Adding neighbour to array if its unvisited and is no edge.
+    if (top && !top.visited) {
       neighbours.push(top);
     }
-    if(right && !right.visited){
+    if (right && !right.visited) {
       neighbours.push(right);
     }
-    if(bottom && !bottom.visited){
+    if (bottom && !bottom.visited) {
       neighbours.push(bottom);
     }
-    if(left && !left.visited){
+    if (left && !left.visited) {
       neighbours.push(left);
+    }
+
+    // If there are unvisted neighbours, return a random one.
+    if (neighbours.length > 0) {
+      var ran = floor(random(0, neighbours.length));
+      return neighbours[ran];
+    } else {
+      return undefined;
     }
   };
 
