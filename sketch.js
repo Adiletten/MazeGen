@@ -1,13 +1,13 @@
 var cols, rows;
-var w = 40; // Cell Size
+var w = 10; // Cell Size
 var cells = [];
+var stack = [];
 var current;
 
 function setup() {
   createCanvas(400, 400);
   cols = floor(width / w);
   rows = floor(height / w);
-  frameRate(5);
 
   // For every row, and for each column in that row. Make a new cell
   for (var x = 0; x < rows; x++) {
@@ -34,11 +34,17 @@ function draw() {
 
   // Gets one random neighbour, this will be the next one to visit
   var next = current.checkNeighbours();
-  // If there is a unvisted neighbour. Set it visited, change current to it, remove the wall between them
+  // If there is a unvisted neighbour. Set it visited > add to stack > remove the wall between them > change current to it,
   if (next) {
     next.visited = true;
+    stack.push(current);
     removeWalls(current, next);
     current = next;
+    // If we are stuck (thus there are no unvisted neighbours). We go back in the stack till we find one. (See Readme for information)
+  } else if (stack.length > 0) {
+    // Basicly go back one cell. So the cell before the current one will be checked for free neighbours again.
+    var cell = stack.pop();
+    current = cell;
   }
 }
 
@@ -87,7 +93,7 @@ function Cell(y, x) {
   };
 
   // Highlights the 'Bot', aka current cell
-  this.highlight = function () {
+  this.highlight = function() {
     var x = this.x * w;
     var y = this.y * w;
     noStroke();
@@ -131,7 +137,7 @@ function removeWalls(a, b) {
   if (x === 1) {
     a.walls[3] = false; // Remove right wall
     b.walls[1] = false; // Remove left wall
-  } else if(x === -1) {
+  } else if (x === -1) {
     a.walls[1] = false; // Remove right wall
     b.walls[3] = false; // Remove left wall
   }
@@ -141,7 +147,7 @@ function removeWalls(a, b) {
   if (y === 1) {
     a.walls[0] = false; // Remove right wall
     b.walls[2] = false; // Remove left wall
-  } else if(y === -1) {
+  } else if (y === -1) {
     a.walls[2] = false; // Remove right wall
     b.walls[0] = false; // Remove left wall
   }
