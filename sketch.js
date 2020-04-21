@@ -9,7 +9,7 @@ function setup() {
   cols = floor(width / w);
   rows = floor(height / w);
 
-  // For every row, and for each column in that row. Make a new cell
+  // For every row, and for each column in that row. Make a new cells
   for (var x = 0; x < rows; x++) {
     for (var y = 0; y < cols; y++) {
       var cell = new Cell(y, x);
