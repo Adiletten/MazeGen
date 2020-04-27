@@ -1,13 +1,14 @@
 var cols, rows;
-var w = 10; // Cell Size
+var w = 40; // Cell Size
 var cells = [];
 var stack = [];
 var current;
 
 function setup() {
-  createCanvas(400, 400);
+  createCanvas(800, 800);
   cols = floor(width / w);
   rows = floor(height / w);
+  frameRate(30);
 
   // For every row, and for each column in that row. Make a new cell
   for (var x = 0; x < rows; x++) {
